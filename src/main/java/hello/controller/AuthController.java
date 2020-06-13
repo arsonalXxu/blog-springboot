@@ -1,6 +1,6 @@
 package hello.controller;
 
-import hello.entity.Result;
+import hello.entity.LoginResult;
 import hello.entity.User;
 import hello.service.UserService;
 import org.springframework.dao.DuplicateKeyException;
@@ -40,9 +40,9 @@ public class AuthController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByUsername(authentication == null ? null : authentication.getName());
         if (user != null) {
-            return Result.success(null, user);
+            return LoginResult.success(null, user);
         } else {
-            return Result.returnOk("用户没有登录");
+            return LoginResult.returnOk("用户没有登录");
         }
     }
 
@@ -54,51 +54,51 @@ public class AuthController {
         boolean usernameMatch = usernamePattern.matcher(username).matches();
         boolean passwordMatch = passwordPattern.matcher(password).matches();
         if (!usernameMatch) {
-            return Result.failure("用户名长度须为1到15个字符，只能是数字字母下划线中文");
+            return LoginResult.failure("用户名长度须为1到15个字符，只能是数字字母下划线中文");
         }
         if (!passwordMatch) {
-            return Result.failure("密码长度要求6到16个字符");
+            return LoginResult.failure("密码长度要求6到16个字符");
         }
         try {
             userService.save(username, password);
         } catch (DuplicateKeyException e) {
             // 防止并发访问时，同时注册相同的用户名出现异常，数据库层面用户名做了一个unique处理
-            return Result.failure("用户名已经存在");
+            return LoginResult.failure("用户名已经存在");
         }
-        return Result.returnOk("注册成功");
+        return LoginResult.returnOk("注册成功");
     }
 
     @GetMapping("/auth/logout")
-    public Result logout() {
+    public LoginResult logout() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUserByUsername(username);
         if (user == null) {
-            return Result.failure("用户尚未登录");
+            return LoginResult.failure("用户尚未登录");
         } else {
             SecurityContextHolder.clearContext();
-            return Result.returnOk("注销成功");
+            return LoginResult.returnOk("注销成功");
         }
     }
 
     @PostMapping("/auth/login")
     @ResponseBody
-    public Result login(@RequestBody Map<String, Object> usernameAndPassword) {
+    public LoginResult login(@RequestBody Map<String, Object> usernameAndPassword) {
         String username = usernameAndPassword.get("username").toString();
         String password = usernameAndPassword.get("password").toString();
         UserDetails userDetails;
         try {
             userDetails = userService.loadUserByUsername(username);
         } catch (UsernameNotFoundException e) {
-            return Result.failure("用户不存在");
+            return LoginResult.failure("用户不存在");
         }
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
         try {
 
             authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(token);
-            return Result.success("登录成功", userService.getUserByUsername(username));
+            return LoginResult.success("登录成功", userService.getUserByUsername(username));
         } catch (BadCredentialsException e) {
-            return Result.failure("密码不正确");
+            return LoginResult.failure("密码不正确");
         }
     }
 
