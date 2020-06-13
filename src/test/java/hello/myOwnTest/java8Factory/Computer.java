@@ -1,4 +1,4 @@
-package hello.java8Factory;
+package hello.myOwnTest.java8Factory;
 
 public class Computer implements Product {
     @Override

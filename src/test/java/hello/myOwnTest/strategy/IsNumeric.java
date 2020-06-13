@@ -1,4 +1,4 @@
-package hello.strategy;
+package hello.myOwnTest.strategy;
 
 public class IsNumeric implements ValidationStrategy {
     @Override

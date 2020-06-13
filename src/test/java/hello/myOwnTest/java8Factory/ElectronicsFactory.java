@@ -1,4 +1,4 @@
-package hello.java8Factory;
+package hello.myOwnTest.java8Factory;
 
 import java.util.HashMap;
 import java.util.Map;
