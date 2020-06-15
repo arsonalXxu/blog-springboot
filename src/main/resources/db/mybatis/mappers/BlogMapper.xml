@@ -18,7 +18,7 @@
         from blog b left join user u
         on b.user_id = u.id
 
-        <if test="user_id != null">
+        <if test="userId != null">
             where b.user_id = #{userId}
         </if>
         limit #{offset}, #{limit}

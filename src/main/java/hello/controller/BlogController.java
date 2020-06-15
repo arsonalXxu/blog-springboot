@@ -21,7 +21,7 @@ public class BlogController {
 
     @GetMapping("/blog")
     @ResponseBody
-    public Result getBlogs(@RequestParam("page") Integer page,
+    public Result getBlogs(@RequestParam(value = "page", required = false) Integer page,
                            @RequestParam(value = "userId", required = false) Long userId,
                            @RequestParam(value = "atIndex", required = false) Boolean atIndex) {
         if (page == null || page <= 0) {
