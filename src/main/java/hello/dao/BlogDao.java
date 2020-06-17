@@ -32,4 +32,8 @@ public class BlogDao {
         int countBlog = sqlSession.selectOne("countBlog", userId);
         return countBlog;
     }
+
+    public void createBlog(Blog blog) {
+        this.sqlSession.insert("createBlog", blog);
+    }
 }

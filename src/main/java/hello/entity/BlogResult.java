@@ -7,8 +7,16 @@ public class BlogResult extends Result<List<Blog>> {
     private int page;
     private int totalPage;
 
+    public BlogResult(String status, String msg, List<Blog> data) {
+        super(status, msg, data);
+    }
+
     public static BlogResult success(String msg, int total, int page, int totalPage, List<Blog> data) {
         return new BlogResult("ok", msg, total, page, totalPage, data);
+    }
+
+    public static BlogResult createSuccess(String msg, List<Blog> data) {
+        return new BlogResult("ok", msg, data);
     }
 
     public BlogResult(String status, String msg, int total, int page, int totalPage, List<Blog> data) {

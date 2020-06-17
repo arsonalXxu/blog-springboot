@@ -1,6 +1,7 @@
 package hello.controller;
 
 import hello.entity.LoginResult;
+import hello.entity.Result;
 import hello.entity.User;
 import hello.service.UserService;
 import org.springframework.dao.DuplicateKeyException;
@@ -36,7 +37,7 @@ public class AuthController {
 
     @GetMapping("/auth")
     @ResponseBody
-    public Object auth() {
+    public Result auth() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByUsername(authentication == null ? null : authentication.getName());
         if (user != null) {
@@ -48,7 +49,7 @@ public class AuthController {
 
     @PostMapping("/auth/register")
     @ResponseBody
-    public Object register(@RequestBody Map<String, Object> usernameAndPassword) {
+    public Result register(@RequestBody Map<String, Object> usernameAndPassword) {
         String username = usernameAndPassword.get("username").toString();
         String password = usernameAndPassword.get("password").toString();
         boolean usernameMatch = usernamePattern.matcher(username).matches();

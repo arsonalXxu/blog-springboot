@@ -32,8 +32,18 @@
         </if>
     </select>
 
+    <insert id="createBlog" parameterType="hello.entity.Blog">
+        insert into blog(user_id, title, description, content, created_at, updated_at)
+        values (#{userId},
+                #{title},
+                #{description},
+                #{content},
+                now(),
+                now())
+    </insert>
+
     <resultMap id="blog" type="hello.entity.Blog">
-        <id property="id" column="blog_id" />
+        <id property="id" column="blog_id"/>
         <result property="title" column="blog_title"/>
         <result property="description" column="blog_description"/>
         <result property="content" column="blog_content"/>
