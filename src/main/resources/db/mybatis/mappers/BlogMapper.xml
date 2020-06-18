@@ -42,6 +42,37 @@
                 now())
     </insert>
 
+    <select id="selectBlogById" resultMap="blog">
+        select b.id          as blog_id,
+               b.title       as blog_title,
+               b.description as blog_description,
+               b.content     as blog_content,
+               b.created_at  as blog_created_at,
+               b.updated_at  as blog_updated_at,
+               u.id          as user_id,
+               u.username    as user_username,
+               u.avatar      as user_avatar
+        from blog b
+                 left join user u
+                           on b.user_id = u.id
+        where b.id = #{blogId}
+    </select>
+
+    <update id="updateBlogById" parameterType="hello.entity.Blog">
+        update blog
+        set title=#{title},
+            description=#{description},
+            content=#{content},
+            updated_at=now()
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBlogById" parameterType="long">
+        delete
+        from blog
+        where id = #{blogId}
+    </delete>
+
     <resultMap id="blog" type="hello.entity.Blog">
         <id property="id" column="blog_id"/>
         <result property="title" column="blog_title"/>

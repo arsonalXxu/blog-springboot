@@ -1,9 +1,7 @@
 package hello.dao;
 
 import hello.entity.Blog;
-import hello.entity.BlogResult;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -33,7 +31,22 @@ public class BlogDao {
         return countBlog;
     }
 
-    public void createBlog(Blog blog) {
+    public Blog createBlog(Blog blog) {
         this.sqlSession.insert("createBlog", blog);
+        return selectBlogById(blog.getId());
+    }
+
+    public Blog selectBlogById(Long blogId) {
+        Blog blog = this.sqlSession.selectOne("selectBlogById", blogId);
+        return blog;
+    }
+
+    public Blog updateBlog(Blog blog) {
+        this.sqlSession.update("updateBlogById", blog);
+        return selectBlogById(blog.getId());
+    }
+
+    public void deleteBlog(Long blogId) {
+        this.sqlSession.delete("deleteBlogById", blogId);
     }
 }

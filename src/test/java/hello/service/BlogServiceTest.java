@@ -1,7 +1,8 @@
 package hello.service;
 
 import hello.dao.BlogDao;
-import hello.entity.BlogResult;
+import hello.entity.BlogListResult;
+import hello.entity.Result;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +30,7 @@ public class BlogServiceTest {
     @Test
     void returnFailureWhenExceptionThrown() {
         Mockito.when(blogDao.getBlogs(anyInt(), anyInt(), anyLong(), any())).thenThrow(new RuntimeException());
-        BlogResult result = blogService.getBlogs(1, 10, 123L, null);
+        Result result = blogService.getBlogs(1, 10, 123L, null);
 
         Assertions.assertEquals("fail", result.getStatus());
         Assertions.assertEquals("系统异常", result.getMsg());
